@@ -2,6 +2,10 @@
 
 The server portion of [reploy](https://github.com/AeroNotix/reploy)
 
+# Apiary Docs
+
+[The expected interface](http://docs.reploy.apiary.io/)
+
 ## Usage
 
 ```shell
