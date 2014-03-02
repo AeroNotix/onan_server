@@ -2,8 +2,7 @@
 
 
 (defn create-artefact [request]
-  (let [[namespace name version]
-        (map (:body request) ["namespace" "name" "version"])]
+  (let [{:strs [namespace name version payload]} (:body request)]
     {:status 200 :headers {"location" (format "/deps/%s/%s/%s"
                                               namespace name version)}}))
 
