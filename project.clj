@@ -6,4 +6,5 @@
   :dependencies [[compojure "1.1.6"]
                  [org.clojure/clojure "1.5.1"]
                  [ring "1.2.1"]
+                 [org.clojure/data.json "0.2.4"]
                  [ring/ring-json "0.2.0"]])

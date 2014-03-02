@@ -1,10 +1,14 @@
-(ns reploy-server.artefacts.http)
+(ns reploy-server.artefacts.http
+  (:require [reploy-server.utils :refer [md5sum]]
+            [clojure.string :as string]))
 
 
 (defn create-artefact [request]
-  (let [{:strs [namespace name version payload]} (:body request)]
-    {:status 200 :headers {"location" (format "/deps/%s/%s/%s"
-                                              namespace name version)}}))
+  (let [{:strs  [namespace name version payload checksum]} (:body request)]
+    (if (not= (md5sum payload) (string/lower-case checksum))
+      {:status 422 :body {:error "Checksums did not match"}}
+      {:status 200 :headers {"location" (format "/deps/%s/%s/%s"
+                                                namespace name version)}})))
 
 (defn get-artefact [request]
   {:status 200
