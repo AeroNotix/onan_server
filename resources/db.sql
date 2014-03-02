@@ -16,6 +16,6 @@ CREATE TABLE IF NOT EXISTS deployment (
        payload   bytea,
 
        author    uuid,
-       
+
        FOREIGN KEY (author) REFERENCES users (uuid)
 );
