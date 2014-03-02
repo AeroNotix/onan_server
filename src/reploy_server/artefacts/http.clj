@@ -28,4 +28,4 @@
                :version "0.4.0"
                :checksum "7a9c1d2a0f3a8db565b7e382ef5b1151"
                :payload "base64 encoded payload of ez package"}]}
-      {:status 404})))
+      {:status 404 :body {:error "No artefact was found."}})))
