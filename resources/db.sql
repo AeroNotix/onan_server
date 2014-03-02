@@ -19,3 +19,13 @@ CREATE TABLE IF NOT EXISTS deployment (
 
        FOREIGN KEY (author) REFERENCES users (uuid)
 );
+
+CREATE TABLE IF NOT EXISTS dependencies (
+       project    uuid,
+       dependency uuid,
+
+       FOREIGN KEY (project) REFERENCES deployment (uuid),
+       FOREIGN KEY (dependency) REFERENCES deployment (uuid),
+
+       CONSTRAINT pk PRIMARY KEY (project, dependency)
+);
