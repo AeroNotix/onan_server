@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS dependencies (
        project    uuid,
        dependency uuid,
 
+
        FOREIGN KEY (project) REFERENCES deployment (uuid),
        FOREIGN KEY (dependency) REFERENCES deployment (uuid),
 

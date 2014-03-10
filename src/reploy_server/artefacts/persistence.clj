@@ -1,6 +1,5 @@
 (ns reploy-server.artefacts.persistence)
 
-
 (defn retrieve-stored [namespace name version]
   nil)
 
