@@ -1,22 +1,34 @@
 (ns reploy-server.artefacts.http
   (:require [clojure.string :as string]
             [reploy-server.artefacts.persistence :as p]
+            [reploy-server.users :as users]
             [reploy-server.utils :refer [md5sum]]))
 
 
+(defn handle-create-artefact [user namespace name version payload dependencies]
+  (let [stored? (p/store-artefact user namespace name version payload dependencies)]
+    (if-not (:error stored?)
+      {:status 200 :headers {"location" (format "/deps/%s/%s/%s"
+                                                namespace name version)}}
+      (condp = (:type stored?)
+        :missing_deps
+          {:status 404 :body stored?}
+        :else
+          {:status 500 :body stored?}))))
+
 (defn create-artefact [request]
-  (let [{:strs  [namespace name version payload checksum]} (:body request)]
+  (let [{:strs  [namespace name version payload checksum dependencies]} (:body request)
+        ;; HACKS: We should have better user managment. /cc @rpt?
+        user (users/get-user namespace)]
     (if (not= (md5sum payload) (string/lower-case checksum))
       {:status 422 :body {:error "Checksums did not match."}}
       (if-let [stored (p/retrieve-stored namespace name version)]
-        {:status 409 :body {:version (:version stored)}}
-        (do (p/store-artefact namespace name version payload)
-            {:status 200 :headers {"location" (format "/deps/%s/%s/%s"
-                                                      namespace name version)}})))))
+        {:status 409}
+        (handle-create-artefact user namespace name version payload dependencies)))))
 
 (defn get-artefact [request]
-  (let [{:keys  [namespace name version]} (:params request)]
-    (if-let [stored (p/retrieve-stored namespace name version)]
+  (let [{:keys  [namespace name vsn]} (:params request)]
+    (if-let [stored (p/retrieve-stored namespace name vsn)]
       {:status 200
        :body [{:namespace "rpt"
                :name "erlcql"
