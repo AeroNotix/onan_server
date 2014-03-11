@@ -12,19 +12,19 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS deployment (
        uuid     uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
 
-       namespace varchar(32),
-       name      varchar(32),
-       version   varchar(24),
-       payload   bytea,
+       namespace varchar(32) NOT NULL,
+       name      varchar(32) NOT NULL,
+       version   varchar(24) NOT NULL,
+       payload   bytea NOT NULL,
 
-       author    uuid,
+       author    uuid NOT NULL,
 
        FOREIGN KEY (author) REFERENCES users (uuid)
 );
 
 CREATE TABLE IF NOT EXISTS dependencies (
-       project    uuid,
-       dependency uuid,
+       project    uuid NOT NULL,
+       dependency uuid NOT NULL,
 
 
        FOREIGN KEY (project) REFERENCES deployment (uuid),
