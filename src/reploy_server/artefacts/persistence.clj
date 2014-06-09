@@ -52,13 +52,13 @@
                       :name      name
                       :version   version
                       :payload   (.getBytes payload)}))
-     (let [deps (pmap (fn [{:strs [namespace name version]}]
+     (let [deps (map (fn [{:strs [namespace name version]}]
                         (:uuid (retrieve-stored namespace name version))) dependencies)]
        (if (some nil? deps)
          (do
            (rollback)
            {:error "Dependencies not found." :type :missing_deps})
          (doall
-          (pmap (partial create-dependency uuid)
-                (pmap (fn [{:strs [namespace name version]}]
+          (map (partial create-dependency uuid)
+                (map (fn [{:strs [namespace name version]}]
                         (:uuid (retrieve-stored namespace name version))) dependencies))))))))
