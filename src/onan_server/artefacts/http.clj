@@ -5,8 +5,8 @@
             [onan-server.utils :refer [md5sum]]))
 
 
-(defn handle-create-artefact [user namespace name version payload dependencies]
-  (let [stored? (p/store-artefact user namespace name version payload dependencies)]
+(defn handle-create-artefact [namespace name version payload dependencies]
+  (let [stored? (p/store-artefact namespace name version payload dependencies)]
     (if-not (:error stored?)
       {:status 200 :headers {"location" (format "/deps/%s/%s/%s"
                                                 namespace name version)}}
@@ -17,14 +17,12 @@
           {:status 500 :body stored?}))))
 
 (defn create-artefact [request]
-  (let [{:strs  [namespace name version payload checksum dependencies]} (:body request)
-        ;; HACKS: We should have better user managment. /cc @rpt?
-        user (users/get-user namespace)]
+  (let [{:strs  [namespace name version payload checksum dependencies]} (:body request)]
     (if (not= (md5sum payload) (string/lower-case checksum))
       {:status 422 :body {:error "Checksums did not match."}}
       (if-let [stored (p/retrieve-stored namespace name version)]
         {:status 409}
-        (handle-create-artefact user namespace name version payload dependencies)))))
+        (handle-create-artefact namespace name version payload dependencies)))))
 
 (defn get-artefact [request]
   (let [{:keys  [namespace name vsn]} (:params request)]

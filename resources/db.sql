@@ -15,11 +15,8 @@ CREATE TABLE IF NOT EXISTS deployment (
        namespace varchar(32) NOT NULL,
        name      varchar(32) NOT NULL,
        version   varchar(24) NOT NULL,
-       payload   bytea NOT NULL,
+       payload   bytea NOT NULL
 
-       author    uuid NOT NULL,
-
-       FOREIGN KEY (author) REFERENCES users (uuid)
 );
 
 CREATE TABLE IF NOT EXISTS dependencies (
