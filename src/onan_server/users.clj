@@ -1,4 +1,4 @@
-(ns reploy-server.users
+(ns onan-server.users
   (:use [korma db core])
   (:import [org.mindrot.jbcrypt BCrypt]))
 

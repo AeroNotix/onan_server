@@ -1,7 +1,7 @@
-(ns reploy-server.artefacts.persistence
+(ns onan-server.artefacts.persistence
   (:use [korma db core])
-  (:require [reploy-server.users :as users]
-            [reploy-server.db :refer [main-database]]))
+  (:require [onan-server.users :as users]
+            [onan-server.db :refer [main-database]]))
 
 (defentity deployment
   (has-one users/users)
@@ -27,6 +27,7 @@
        (when deployment
          (cons deployment deps))))
   ([namespace name version]
+     (println [namespace name version])
      (let [deployment (first
                        (select deployment
                          (where {:namespace namespace
@@ -53,7 +54,7 @@
                       :version   version
                       :payload   (.getBytes payload)}))
      (let [deps (map (fn [{:strs [namespace name version]}]
-                        (:uuid (retrieve-stored namespace name version))) dependencies)]
+                       (:uuid (retrieve-stored namespace name version))) dependencies)]
        (if (some nil? deps)
          (do
            (rollback)

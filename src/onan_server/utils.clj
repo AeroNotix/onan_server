@@ -1,4 +1,4 @@
-(ns reploy-server.utils)
+(ns onan-server.utils)
 
 (defn md5sum [s]
   (apply str

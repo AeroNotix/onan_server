@@ -1,8 +1,8 @@
-(defproject reploy_server "0.0.1"
-  :description "Server side handling of: https://github.com/AeroNotix/reploy"
+(defproject onan_server "0.0.1"
+  :description "Server side handling of: https://github.com/AeroNotix/onan"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :main ^:skip-aot reploy-server.core
+  :main ^:skip-aot onan-server.core
   :dependencies [[compojure "1.1.6"]
                  [korma "0.3.0-RC5"]
                  [org.clojure/clojure "1.5.1"]

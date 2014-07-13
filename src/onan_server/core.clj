@@ -1,10 +1,10 @@
-(ns reploy-server.core
+(ns onan-server.core
   (:use [compojure.core :only [defroutes routes GET POST]]
         [ring.middleware.json]
         [ring.middleware.stacktrace]
         [ring.util.response])
   (:require [ring.adapter.jetty :as jetty]
-            [reploy-server.artefacts.http :refer [create-artefact
+            [onan-server.artefacts.http :refer [create-artefact
                                                   get-artefact]]))
 
 

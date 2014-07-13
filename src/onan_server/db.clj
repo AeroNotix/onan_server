@@ -1,6 +1,6 @@
-(ns reploy-server.db
+(ns onan-server.db
   (:use [korma db core]))
 
 (defdb main-database (postgres
-                      {:db   "reploy"
+                      {:db   "onan"
                        :user "postgres"}))

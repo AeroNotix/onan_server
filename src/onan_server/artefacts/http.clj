@@ -1,8 +1,8 @@
-(ns reploy-server.artefacts.http
+(ns onan-server.artefacts.http
   (:require [clojure.string :as string]
-            [reploy-server.artefacts.persistence :as p]
-            [reploy-server.users :as users]
-            [reploy-server.utils :refer [md5sum]]))
+            [onan-server.artefacts.persistence :as p]
+            [onan-server.users :as users]
+            [onan-server.utils :refer [md5sum]]))
 
 
 (defn handle-create-artefact [user namespace name version payload dependencies]
