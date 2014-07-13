@@ -29,10 +29,10 @@
   ([namespace name version]
      (let [deployment (first
                        (select deployment
-                               (where {:namespace namespace
-                                       :name      name
-                                       :version   version})
-                               (limit 1)))
+                         (where {:namespace namespace
+                                 :name      name
+                                 :version   version})
+                         (limit 1)))
            uuid (:uuid deployment)
            deps (retrieve-dependencies uuid)]
        (when deployment
