@@ -44,22 +44,15 @@
           (values {:project    project
                    :dependency dependency})))
 
-(defn store-artefact [author namespace name version payload dependencies]
-  (let [uuid (:uuid author)]
-    (transaction
-     (insert deployment
-             (values {:author uuid
-                      :namespace namespace
-                      :name      name
-                      :version   version
-                      :payload   (.getBytes payload)}))
-     (let [deps (map (fn [{:strs [namespace name version]}]
-                       (:uuid (retrieve-stored namespace name version))) dependencies)]
-       (if (some nil? deps)
-         (do
-           (rollback)
-           {:error "Dependencies not found." :type :missing_deps})
-         (doall
-          (map (partial create-dependency uuid)
-                (map (fn [{:strs [namespace name version]}]
-                        (:uuid (retrieve-stored namespace name version))) dependencies))))))))
+(defn store-artefact [namespace name version payload dependencies]
+  (transaction
+    (insert deployment
+      (values {:namespace namespace
+               :name      name
+               :version   version
+               :payload   (.getBytes payload)}))
+    (let [deps (map (fn [{:strs [namespace name version]}]
+                      (:uuid (retrieve-stored namespace name version))) dependencies)]
+      (if (some nil? deps)
+        (do (rollback)
+            {:error "Dependencies not found." :type :missing_deps})))))
