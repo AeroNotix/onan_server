@@ -21,7 +21,7 @@
       wrap-stacktrace-log))
 
 (defn- start-server []
-  (let [options {:port 45045}]
+  (let [options {:port 45045}] ; TODO make this a config variable
     (jetty/run-jetty wrap-middleware options)))
 
 (defn -main [& args]
