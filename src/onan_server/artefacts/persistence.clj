@@ -27,7 +27,6 @@
        (when deployment
          (cons deployment deps))))
   ([namespace name version]
-     (println [namespace name version])
      (let [deployment (first
                        (select deployment
                          (where {:namespace namespace
@@ -46,13 +45,15 @@
 
 (defn store-artefact [namespace name version payload dependencies]
   (transaction
-    (insert deployment
-      (values {:namespace namespace
-               :name      name
-               :version   version
-               :payload   (.getBytes payload)}))
-    (let [deps (map (fn [{:strs [namespace name version]}]
-                      (:uuid (retrieve-stored namespace name version))) dependencies)]
-      (if (some nil? deps)
-        (do (rollback)
-            {:error "Dependencies not found." :type :missing_deps})))))
+    (let [uuid (:uuid (insert deployment
+                        (values {:namespace namespace
+                                 :name      name
+                                 :version   version
+                                 :payload   (.getBytes payload)})))]
+      (let [deps (apply concat
+                   (map (fn [{:strs [namespace name version]}]
+                          (retrieve-stored namespace name version)) dependencies))]
+        (if (not= (count deps) (count dependencies))
+          (do (rollback)
+              {:error "Dependencies not found." :type :missing_deps})
+          (doall (map (comp (partial create-dependency uuid) :uuid) deps)))))))
