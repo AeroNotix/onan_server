@@ -1,4 +1,5 @@
 (ns reploy-server.artefacts.persistence
+  (:use [korma db core])
   (:require [onan-server.artefacts.persistence :refer :all]
             [clojure.test :refer :all]
             [clojure.test.check :as tc]
@@ -6,6 +7,13 @@
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]))
 
+
+
+(defn truncate-tables [& args]
+  (delete deployment)
+  (delete dependencies))
+
+(use-fixtures :each truncate-tables)
 
 (defspec simple-artefact 100
   (prop/for-all [name (gen/not-empty gen/string-alpha-numeric)
