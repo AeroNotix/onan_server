@@ -15,8 +15,9 @@ CREATE TABLE IF NOT EXISTS deployment (
        namespace varchar(128) NOT NULL,
        name      varchar(128) NOT NULL,
        version   varchar(24) NOT NULL,
-       payload   bytea NOT NULL
+       payload   bytea NOT NULL,
 
+       UNIQUE (namespace, name, version)
 );
 
 CREATE TABLE IF NOT EXISTS dependencies (
