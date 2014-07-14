@@ -23,7 +23,7 @@
     (let [vsn (format "%d.%d.%d" ma mi pa)]
       (store-artefact namespace name vsn "" []))))
 
-(defspec conflicting-artefact
+(defspec dependency-on-same-artefact
   (prop/for-all [name (gen/not-empty gen/string-alpha-numeric)
                  namespace (gen/not-empty gen/string-alpha-numeric)
                  [ma mi pa] (gen/tuple gen/pos-int gen/pos-int gen/pos-int)]
