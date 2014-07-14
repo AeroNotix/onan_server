@@ -16,6 +16,10 @@
         :else
           {:status 500 :body stored?}))))
 
+(defn par [what]
+  (println what)
+  what)
+
 (defn create-artefact [request]
   (let [{:strs  [namespace name version payload checksum dependencies]} (:body request)]
     (if (not= (md5sum payload) (string/lower-case checksum))
@@ -27,7 +31,9 @@
 (defn get-artefact [request]
   (let [{:keys  [namespace name vsn]} (:params request)]
     (if-let [stored (p/retrieve-stored namespace name vsn)]
-      (map (comp
-             #(update-in % [:uuid] (fn [x] (.toString x)))
-             #(update-in % [:payload] (fn [x] (String. x)))) stored)
+      {:status 200
+       :body {:dependencies
+              (map (comp
+                     #(update-in % [:uuid] (fn [x] (.toString x)))
+                     #(update-in % [:payload] (fn [x] (String. x)))) stored)}}
       {:status 404 :body {:error "No artefact was found."}})))

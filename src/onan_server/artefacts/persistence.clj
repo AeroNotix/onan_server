@@ -15,7 +15,7 @@
 (defn retrieve-dependencies [uuid]
   (let [deps (select dependencies
                      (where {:project uuid}))]
-    (pmap #(retrieve-stored (:dependency %)) deps)))
+    (flatten (pmap #(retrieve-stored (:dependency %)) deps))))
 
 (defn retrieve-stored
   ([uuid]
