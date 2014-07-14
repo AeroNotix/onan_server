@@ -22,8 +22,17 @@
     (let [vsn (format "%d.%d.%d" ma mi pa)]
       (store-artefact namespace name vsn "" []))))
 
-(deftest conflicting-artefact
-  (is false))
+(defspec conflicting-artefact
+  (prop/for-all [name (gen/not-empty gen/string-alpha-numeric)
+                 namespace (gen/not-empty gen/string-alpha-numeric)
+                 [ma mi pa] (gen/tuple gen/pos-int gen/pos-int gen/pos-int)]
+    (let [vsn (format "%d.%d.%d" ma mi pa)]
+      (is
+        (=
+          {:error "Dependencies not found." :type :missing_deps}
+          (store-artefact namespace name vsn "" [{:namespace namespace
+                                                  :name      name
+                                                  :vsn       vsn}]))))))
 
 (deftest recursive-dependency
   (is false))
