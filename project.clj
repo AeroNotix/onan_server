@@ -6,6 +6,7 @@
   :dependencies [[com.stuartsierra/component "0.2.1"]
                  [compojure "1.1.6"]
                  [korma "0.3.0-RC5"]
+                 [org.clojure/test.check "0.5.8"]
                  [org.clojure/clojure "1.5.1"]
                  [org.clojure/data.json "0.2.4"]
                  [org.mindrot/jbcrypt "0.3m"]
