@@ -9,9 +9,10 @@
 
 
 
-(defn truncate-tables [& args]
+(defn truncate-tables [f]
   (delete deployment)
-  (delete dependencies))
+  (delete dependencies)
+  (f))
 
 (use-fixtures :each truncate-tables)
 
