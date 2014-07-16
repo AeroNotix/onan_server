@@ -43,9 +43,11 @@
 
 (defspec simple-artefact 100
   (prop/for-all [artefact gen-artefact]
-    (store-artefact artefact)))
+    (is
+      (= (store-artefact artefact)
+        {:status :success}))))
 
-(defspec dependency-on-same-artefact 3
+(defspec dependency-on-same-artefact 100
   (prop/for-all [artefact gen-artefact]
     (is
       (=

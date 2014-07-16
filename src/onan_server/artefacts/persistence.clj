@@ -67,4 +67,6 @@
            (if (< (count deps) (count dependencies))
              (do (rollback)
                  {:error {:missing_deps (missing-deps dependencies deps)} :type :missing_deps})
-             (doall (map (comp (partial create-dependency uuid) :uuid) deps))))))))
+             (do
+               (doall (map (comp (partial create-dependency uuid) :uuid) deps))
+               {:status :success})))))))
