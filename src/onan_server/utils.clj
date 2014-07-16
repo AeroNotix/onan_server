@@ -6,3 +6,6 @@
               (.digest (doto (java.security.MessageDigest/getInstance "MD5")
                          .reset
                          (.update (.getBytes s)))))))
+
+(defn key-fn [f m]
+  (into {} (for [[k v] m] [(f k) v])))
